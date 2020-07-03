@@ -72,7 +72,8 @@ class DbConnection extends SQLiteOpenHelper {
         // Create a readable database
         SQLiteDatabase db = getReadableDatabase();
         // Construct a SQL query statement
-        String queryStatement = "SELECT _id"
+        String queryStatement = "SELECT _id, "
+                + COLUMN_STOCK_NAME
                 + " FROM " + TABLE_STOCKS
                 + " WHERE stock_name = " + stock_name;
         // Execute the raw query
