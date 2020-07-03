@@ -11,7 +11,7 @@ import java.util.List;
 
 class DbConnection extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = ".db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String TABLE_STOCKS = "stocks";
     private static final String COLUMN_STOCK_NAME = "stock_name";
 
@@ -19,7 +19,7 @@ class DbConnection extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    private List<String> baseStocks = new ArrayList<String>();
+//    private List<String> baseStocks = new ArrayList<String>();
 
     @Override
     public void onCreate(final SQLiteDatabase db) {
@@ -28,15 +28,15 @@ class DbConnection extends SQLiteOpenHelper {
                 + "(_id INTEGER PRIMARY KEY, "
                 + COLUMN_STOCK_NAME + " TEXT);");
 
-        baseStocks.add("AAPL");
-        baseStocks.add("AMZN");
-        baseStocks.add("TSLA");
-
-        for (String stockName : baseStocks){
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_STOCK_NAME, stockName);
-            db.insert(TABLE_STOCKS, null, values);
-        }
+//        baseStocks.add("AAPL");
+//        baseStocks.add("AMZN");
+//        baseStocks.add("TSLA");
+//
+//        for (String stockName : baseStocks){
+//            ContentValues values = new ContentValues();
+//            values.put(COLUMN_STOCK_NAME, stockName);
+//            db.insert(TABLE_STOCKS, null, values);
+//        }
     }
 
     @Override
@@ -64,6 +64,17 @@ class DbConnection extends SQLiteOpenHelper {
         String queryStatement = "SELECT _id, "
                 + COLUMN_STOCK_NAME
                 + " FROM " + TABLE_STOCKS;
+        // Execute the raw query
+        return db.rawQuery(queryStatement, null);
+    }
+
+    public Cursor getStockByName(String stock_name) {
+        // Create a readable database
+        SQLiteDatabase db = getReadableDatabase();
+        // Construct a SQL query statement
+        String queryStatement = "SELECT _id"
+                + " FROM " + TABLE_STOCKS
+                + " WHERE stock_name = " + stock_name;
         // Execute the raw query
         return db.rawQuery(queryStatement, null);
     }
