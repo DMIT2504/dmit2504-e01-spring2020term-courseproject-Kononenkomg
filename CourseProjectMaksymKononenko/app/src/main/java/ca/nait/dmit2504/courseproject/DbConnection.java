@@ -6,24 +6,37 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class DbConnection extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = ".db";
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_STOCKS = "stocks";
     private static final String COLUMN_STOCK_NAME = "stock_name";
-    private static final String COLUMN_DATE = "date";
 
     public DbConnection(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
+    private List<String> baseStocks = new ArrayList<String>();
 
     @Override
     public void onCreate(final SQLiteDatabase db) {
         // execute SQL statements to create required database tables
         db.execSQL("CREATE TABLE " + TABLE_STOCKS
                 + "(_id INTEGER PRIMARY KEY, "
-                + COLUMN_STOCK_NAME + " TEXT, "
-                + COLUMN_DATE + " TEXT);");
+                + COLUMN_STOCK_NAME + " TEXT);");
+
+        baseStocks.add("AAPL");
+        baseStocks.add("AMZN");
+        baseStocks.add("TSLA");
+
+        for (String stockName : baseStocks){
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_STOCK_NAME, stockName);
+            db.insert(TABLE_STOCKS, null, values);
+        }
     }
 
     @Override
@@ -33,4 +46,14 @@ class DbConnection extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+
+    public long addStock(String stockName) {
+        // Get a writeable database
+        SQLiteDatabase db = getWritableDatabase();
+        // Create a ContentValue with the values to insert
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_STOCK_NAME, stockName);
+        // Call the insert() method
+        return db.insert(TABLE_STOCKS, null, values);
+    }
 }
