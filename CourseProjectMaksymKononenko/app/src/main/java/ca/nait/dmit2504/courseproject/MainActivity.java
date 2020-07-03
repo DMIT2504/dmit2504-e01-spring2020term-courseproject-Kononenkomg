@@ -10,8 +10,9 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,8 +47,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(final Call<String> call, final Response<String> response) {
                 String responseBody = response.body();
-                JsonObject jsonObject = new JsonParser().parse(responseBody).getAsJsonObject();
-                String test = jsonObject.
+                JSONObject movieObject = null;
+                try {
+                    movieObject = new JSONObject(responseBody);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    String title = movieObject.getString("symbol");
+                    String stop = "stop";
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                
             }
 
             @Override
