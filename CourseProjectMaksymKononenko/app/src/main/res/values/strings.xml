@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CourseProject</string>
+    <string name="add_delete_activity_stock_name">Stock Name</string>
 </resources>

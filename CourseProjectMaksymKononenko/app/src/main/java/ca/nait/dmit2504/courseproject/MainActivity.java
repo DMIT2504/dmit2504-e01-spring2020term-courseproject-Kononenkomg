@@ -2,13 +2,13 @@ package ca.nait.dmit2504.courseproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 
 import org.json.JSONException;
@@ -47,19 +47,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(final Call<String> call, final Response<String> response) {
                 String responseBody = response.body();
-                JSONObject movieObject = null;
+                JSONObject jsonObjet = null;
                 try {
-                    movieObject = new JSONObject(responseBody);
+                    jsonObjet = new JSONObject(responseBody);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 try {
-                    String title = movieObject.getString("symbol");
+                    String name = jsonObjet.getString("symbol");
                     String stop = "stop";
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                
+
             }
 
             @Override
@@ -67,5 +67,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Fetch reviews was not successful.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void addStock(View v){
+        Intent addDeleteStocks = new Intent(this, AddDeleteStocks.class);
+        startActivity(addDeleteStocks);
     }
 }

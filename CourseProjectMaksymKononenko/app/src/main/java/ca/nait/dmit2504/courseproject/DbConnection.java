@@ -56,4 +56,15 @@ class DbConnection extends SQLiteOpenHelper {
         // Call the insert() method
         return db.insert(TABLE_STOCKS, null, values);
     }
+
+    public Cursor getAllStockNames() {
+        // Create a readable database
+        SQLiteDatabase db = getReadableDatabase();
+        // Construct a SQL query statement
+        String queryStatement = "SELECT _id, "
+                + COLUMN_STOCK_NAME
+                + " FROM " + TABLE_STOCKS;
+        // Execute the raw query
+        return db.rawQuery(queryStatement, null);
+    }
 }
