@@ -47,13 +47,7 @@ public class AddDeleteStocks extends AppCompatActivity {
 
     private void rebindListView() {
         Cursor dbCursor = addDbConnection.getAllStockNames();
-
-//        if (dbCursor.moveToFirst()){
-//            do{
-//                String data = dbCursor.getString(dbCursor.getColumnIndex("stock_name"));
-//                String stop = "stop";
-//            }while(dbCursor.moveToNext());
-//        }
+        
         // Define an array of columns names used by the cursor
         String[] fromFields = {"stock_name"};
         // Define an array of resource ids in the listview item layout
@@ -75,12 +69,12 @@ public class AddDeleteStocks extends AppCompatActivity {
             Toast.makeText(this, "The stock name can not be empty", Toast.LENGTH_LONG).show();
             return;
         }
-        Cursor cursor = addDbConnection.getStockByName(stockName);
-        String id = null;
-        if (cursor.moveToFirst()){
-            id = cursor.getString(cursor.getColumnIndex("_id"));
-        }
-        if (id.toString().isEmpty() || id == null) {
+//        Cursor cursor = addDbConnection.getStockByName(stockName);
+//        String id = null;
+//        if (cursor.moveToFirst()){
+//            id = cursor.getString(cursor.getColumnIndex("_id"));
+//        }
+//        if (id.toString().isEmpty() || id == null) {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("https://finnhub.io")
                     .addConverterFactory(ScalarsConverterFactory.create())
@@ -105,11 +99,12 @@ public class AddDeleteStocks extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    if (metrics == null || metrics.isEmpty() || metrics == "{}") {
+                    if (metrics == null || metrics.isEmpty() || metrics.equals("{}")) {
                         Toast.makeText(AddDeleteStocks.this, "This stock name does not exist", Toast.LENGTH_LONG).show();
                     } else {
                         addDbConnection.addStock(stockName);
                         rebindListView();
+                        addEneterStockName.setText("");
                     }
 
                 }
@@ -119,18 +114,6 @@ public class AddDeleteStocks extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Fetch reviews was not successful.", Toast.LENGTH_SHORT).show();
                 }
             });
-//            if (metrics == null || metrics.isEmpty() || metrics == "{}") {
-//                Toast.makeText(this, "This stock name does not exist", Toast.LENGTH_LONG).show();
-//            } else {
-//                addDbConnection.addStock(stockName);
-//                rebindListView();
-//            }
-//            addDbConnection.addStock(stockName);
-//            rebindListView();
-            addEneterStockName.setText("");
-//        }else{
-//            Toast.makeText(this, "This stock name allready exist", Toast.LENGTH_LONG).show();
 //        }
-        }
     }
 }
