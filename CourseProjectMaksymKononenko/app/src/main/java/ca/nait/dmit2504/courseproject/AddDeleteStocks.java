@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -27,7 +28,7 @@ public class AddDeleteStocks extends AppCompatActivity {
     private ListView addStockNamesList;
     private EditText addEneterStockName;
     private String metrics;
-    private String id;
+    private String selectedStock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +43,9 @@ public class AddDeleteStocks extends AppCompatActivity {
         addStockNamesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long longId) {
-                Button stockButton = view.findViewById(R.id.add_delete_custom_button);
-                id = Long.toString(longId);
-                stockButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addDbConnection.deleteStock(id);
-                        rebindListView();
-                    }
-                });
+                TextView selectedStockView = view.findViewById(R.id.add_delete_custom_stock_name);
+                selectedStock = selectedStockView.getText().toString();
+                addEneterStockName.setText(selectedStock);
             }
         });
 
@@ -131,5 +126,11 @@ public class AddDeleteStocks extends AppCompatActivity {
         }else{
             Toast.makeText(AddDeleteStocks.this, "This stock name already exist", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void removeStockItem(View v) {
+        addDbConnection.deleteStock(selectedStock);
+        rebindListView();
+        addEneterStockName.setText("");
     }
 }

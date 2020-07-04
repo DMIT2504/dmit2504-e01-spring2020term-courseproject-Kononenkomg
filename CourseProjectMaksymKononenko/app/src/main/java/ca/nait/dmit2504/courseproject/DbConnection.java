@@ -85,11 +85,11 @@ class DbConnection extends SQLiteOpenHelper {
         }
     }
 
-    public void deleteStock(String id) {
+    public void deleteStock(String stock_name) {
         SQLiteDatabase db = getReadableDatabase();
 
         String queryStatement = "DELETE FROM " + TABLE_STOCKS
-                + " WHERE _id = " + id;
+                + " WHERE " + COLUMN_STOCK_NAME + " = '" + stock_name + "'";
         db.execSQL( queryStatement );
     }
 }
