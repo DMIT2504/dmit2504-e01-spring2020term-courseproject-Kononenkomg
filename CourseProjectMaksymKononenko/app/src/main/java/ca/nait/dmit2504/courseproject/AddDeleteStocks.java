@@ -90,7 +90,7 @@ public class AddDeleteStocks extends AppCompatActivity {
                     .build();
             Connector connector = retrofit.create(Connector.class);
 
-            Call<String> getCall = connector.listOfArchivedItems("/api/v1/stock/metric?symbol=" + stockName + "&metric=all&token=brvbfevrh5r9k3fgus3g");
+            Call<String> getCall = connector.StockMetrics("/api/v1/stock/metric?symbol=" + stockName + "&metric=all&token=brvbfevrh5r9k3fgus3g");
             getCall.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(final Call<String> call, final Response<String> response) {

@@ -9,7 +9,7 @@ import retrofit2.http.Url;
 
 public interface Connector {
     @GET()
-    Call<String> listOfArchivedItems(@Url String url);
+    Call<String> StockMetrics(@Url String url);
 
     @FormUrlEncoded
     @POST("Lab02Post.jsp")

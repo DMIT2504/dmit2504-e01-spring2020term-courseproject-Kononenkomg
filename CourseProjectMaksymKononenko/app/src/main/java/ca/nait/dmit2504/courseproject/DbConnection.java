@@ -11,9 +11,11 @@ import java.util.List;
 
 class DbConnection extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = ".db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String TABLE_STOCKS = "stocks";
     private static final String COLUMN_STOCK_NAME = "stock_name";
+    private static final String COLUMN_STOCK_CURRENT_PRICE = "current_price";
+    private static final String COLUMN_STOCK_CLOSING_PRICE = "closing_price";
 
     public DbConnection(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -26,7 +28,9 @@ class DbConnection extends SQLiteOpenHelper {
         // execute SQL statements to create required database tables
         db.execSQL("CREATE TABLE " + TABLE_STOCKS
                 + "(_id INTEGER PRIMARY KEY, "
-                + COLUMN_STOCK_NAME + " TEXT);");
+                + COLUMN_STOCK_NAME + " TEXT, "
+                + COLUMN_STOCK_CURRENT_PRICE + " REAL, "
+                + COLUMN_STOCK_CLOSING_PRICE + " REAL);");
 
         baseStocks.add("AAPL");
         baseStocks.add("AMZN");
@@ -62,7 +66,8 @@ class DbConnection extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         // Construct a SQL query statement
         String queryStatement = "SELECT _id, "
-                + COLUMN_STOCK_NAME
+                + COLUMN_STOCK_NAME + ","
+                + COLUMN_STOCK_CURRENT_PRICE
                 + " FROM " + TABLE_STOCKS;
         // Execute the raw query
         return db.rawQuery(queryStatement, null);
@@ -89,6 +94,16 @@ class DbConnection extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
 
         String queryStatement = "DELETE FROM " + TABLE_STOCKS
+                + " WHERE " + COLUMN_STOCK_NAME + " = '" + stock_name + "'";
+        db.execSQL( queryStatement );
+    }
+
+    public void addPrices (Float current_price, Float closing_price, String stock_name) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String queryStatement = "UPDATE " + TABLE_STOCKS
+                + " SET " + COLUMN_STOCK_CURRENT_PRICE + " = " + current_price + ","
+                + COLUMN_STOCK_CLOSING_PRICE + " = " + closing_price
                 + " WHERE " + COLUMN_STOCK_NAME + " = '" + stock_name + "'";
         db.execSQL( queryStatement );
     }
