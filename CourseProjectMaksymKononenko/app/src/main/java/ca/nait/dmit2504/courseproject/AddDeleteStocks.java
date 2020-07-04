@@ -6,6 +6,8 @@ import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,6 +27,7 @@ public class AddDeleteStocks extends AppCompatActivity {
     private ListView addStockNamesList;
     private EditText addEneterStockName;
     private String metrics;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,21 @@ public class AddDeleteStocks extends AppCompatActivity {
 
         addStockNamesList = findViewById(R.id.add_delete_activity_listview);
         addEneterStockName = findViewById(R.id.add_delete_activity_edittext);
+
+        addStockNamesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long longId) {
+                Button stockButton = view.findViewById(R.id.add_delete_custom_button);
+                id = Long.toString(longId);
+                stockButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addDbConnection.deleteStock(id);
+                        rebindListView();
+                    }
+                });
+            }
+        });
 
     }
 
@@ -47,7 +65,7 @@ public class AddDeleteStocks extends AppCompatActivity {
 
     private void rebindListView() {
         Cursor dbCursor = addDbConnection.getAllStockNames();
-        
+
         // Define an array of columns names used by the cursor
         String[] fromFields = {"stock_name"};
         // Define an array of resource ids in the listview item layout
@@ -69,12 +87,8 @@ public class AddDeleteStocks extends AppCompatActivity {
             Toast.makeText(this, "The stock name can not be empty", Toast.LENGTH_LONG).show();
             return;
         }
-//        Cursor cursor = addDbConnection.getStockByName(stockName);
-//        String id = null;
-//        if (cursor.moveToFirst()){
-//            id = cursor.getString(cursor.getColumnIndex("_id"));
-//        }
-//        if (id.toString().isEmpty() || id == null) {
+        String id = addDbConnection.getStockByName(stockName);
+        if (id.isEmpty() || id == null) {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("https://finnhub.io")
                     .addConverterFactory(ScalarsConverterFactory.create())
@@ -114,6 +128,8 @@ public class AddDeleteStocks extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Fetch reviews was not successful.", Toast.LENGTH_SHORT).show();
                 }
             });
-//        }
+        }else{
+            Toast.makeText(AddDeleteStocks.this, "This stock name already exist", Toast.LENGTH_LONG).show();
+        }
     }
 }
