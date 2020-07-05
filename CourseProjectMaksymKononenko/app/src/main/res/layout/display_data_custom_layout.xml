@@ -5,27 +5,27 @@
 
     <TextView
         android:id="@+id/display_stock_name"
-        android:layout_width="219dp"
+        android:layout_width="233dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textAlignment="textStart"
         android:textColor="@color/colorLightGrey"
-        android:textSize="26dp"
-        />
+        android:textSize="26dp" />
 
     <TextView
         android:id="@+id/display_arrow"
         android:layout_width="76dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:textSize="26sp" />
 
     <TextView
         android:id="@+id/display_stock_price"
-        android:layout_width="165dp"
+        android:layout_width="222dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textAlignment="textStart"
         android:textColor="@color/colorLightGrey"
-        android:textSize="26dp"/>
+        android:textSize="26dp" />
 </LinearLayout>

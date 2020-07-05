@@ -3,6 +3,7 @@ package ca.nait.dmit2504.courseproject;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -29,6 +30,9 @@ public class AddDeleteStocks extends AppCompatActivity {
     private EditText addEneterStockName;
     private String metrics;
     private String selectedStock;
+    private Float currentPrice;
+    private Float closingPrice;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,8 @@ public class AddDeleteStocks extends AppCompatActivity {
             }
         });
 
+
+
     }
 
     @Override
@@ -56,6 +62,14 @@ public class AddDeleteStocks extends AppCompatActivity {
         super.onResume();
 
         rebindListView();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        finish();
+        Intent intent = new Intent(AddDeleteStocks.this, MainActivity.class);
+        startActivity(intent);
     }
 
     private void rebindListView() {
@@ -76,6 +90,7 @@ public class AddDeleteStocks extends AppCompatActivity {
         addStockNamesList.setAdapter(cursorAdapter);
     }
 
+
     public void addStockToDb (View v) {
         String stockName = addEneterStockName.getText().toString().toUpperCase();
         if (stockName.isEmpty()) {
@@ -90,7 +105,7 @@ public class AddDeleteStocks extends AppCompatActivity {
                     .build();
             Connector connector = retrofit.create(Connector.class);
 
-            Call<String> getCall = connector.StockMetrics("/api/v1/stock/metric?symbol=" + stockName + "&metric=all&token=brvbfevrh5r9k3fgus3g");
+            Call<String> getCall = connector.StockMetrics("api/v1/quote?symbol=" + stockName + "&token=brvbfevrh5r9k3fgus3g");
             getCall.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(final Call<String> call, final Response<String> response) {
@@ -102,16 +117,20 @@ public class AddDeleteStocks extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     try {
-                        metrics = jsonObjet.getString("metric");
+//                        metrics = jsonObjet.getString("metric");
+                        currentPrice = Float.parseFloat(jsonObjet.getString("c"));
+                        closingPrice = Float.parseFloat(jsonObjet.getString("pc"));
+
                         String stop = "stop";
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    if (metrics == null || metrics.isEmpty() || metrics.equals("{}")) {
+                    if (currentPrice == null) {
                         Toast.makeText(AddDeleteStocks.this, "This stock name does not exist", Toast.LENGTH_LONG).show();
                     } else {
                         addDbConnection.addStock(stockName);
+                        addDbConnection.addPrices(currentPrice, closingPrice, stockName);
                         rebindListView();
                         addEneterStockName.setText("");
                     }
@@ -133,4 +152,6 @@ public class AddDeleteStocks extends AppCompatActivity {
         rebindListView();
         addEneterStockName.setText("");
     }
+
+
 }

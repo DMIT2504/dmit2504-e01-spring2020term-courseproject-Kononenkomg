@@ -73,6 +73,20 @@ class DbConnection extends SQLiteOpenHelper {
         return db.rawQuery(queryStatement, null);
     }
 
+    public Cursor getStockWithPrices(String stock_name) {
+        // Create a readable database
+        SQLiteDatabase db = getReadableDatabase();
+        // Construct a SQL query statement
+        String queryStatement = "SELECT _id, "
+                + COLUMN_STOCK_NAME + ", "
+                + COLUMN_STOCK_CURRENT_PRICE + ", "
+                + COLUMN_STOCK_CLOSING_PRICE
+                + " FROM " + TABLE_STOCKS
+                + " WHERE " + COLUMN_STOCK_NAME + " = '" + stock_name + "'";
+        // Execute the raw query
+        return db.rawQuery(queryStatement, null);
+    }
+
     public String getStockByName(String stock_name) {
         // Create a readable database
         SQLiteDatabase db = getReadableDatabase();
