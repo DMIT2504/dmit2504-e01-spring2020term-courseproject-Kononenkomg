@@ -1,6 +1,5 @@
-# Getting started with Janalta Sites
+# Getting started with Stock Market App
 
-## Stock Market App
 
 # Prerequisite
 
