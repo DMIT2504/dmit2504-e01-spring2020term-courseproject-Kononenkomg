@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private Float closingPrice;
     private Drawable arrowUp;
     private Drawable arrowDown;
+    private String stock;
 
 
     @Override
@@ -45,6 +47,17 @@ public class MainActivity extends AppCompatActivity {
         arrowUp.setTint(getResources().getColor(R.color.colorGreen));
         arrowDown = ContextCompat.getDrawable(this, R.drawable.ic_baseline_keyboard_arrow_down_24);
         arrowDown.setTint(getResources().getColor(R.color.colorRed));
+
+        mStocksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long longId) {
+                TextView stockName = (TextView) view.findViewById(R.id.display_stock_name);
+                stock = stockName.getText().toString();
+                Intent stockDetails = new Intent(MainActivity.this, StockDetails.class);
+                stockDetails.putExtra("stock_name", stock);
+                startActivity(stockDetails);
+            }
+        });
     }
 
 
