@@ -11,5 +11,4 @@ public interface Connector {
     @GET()
     Call<String> StockMetrics(@Url String url);
 
-
 }
