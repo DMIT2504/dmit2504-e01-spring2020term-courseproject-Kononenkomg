@@ -4,10 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 
+import android.animation.AnimatorInflater;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.StateListAnimator;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -34,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private Drawable arrowUp;
     private Drawable arrowDown;
     private String stock;
+    TextView head;
 
 
     @Override
@@ -47,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         arrowUp.setTint(getResources().getColor(R.color.colorGreen));
         arrowDown = ContextCompat.getDrawable(this, R.drawable.ic_baseline_keyboard_arrow_down_24);
         arrowDown.setTint(getResources().getColor(R.color.colorRed));
+        head = findViewById(R.id.head_text);
 
         mStocksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -56,6 +64,23 @@ public class MainActivity extends AppCompatActivity {
                 Intent stockDetails = new Intent(MainActivity.this, StockDetails.class);
                 stockDetails.putExtra("stock_name", stock);
                 startActivity(stockDetails);
+            }
+        });
+
+        setGame2048TitleStateListAnimator();
+        //initNewButtonOnTouchAnim();
+        head.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                ObjectAnimator objectAnimator = ObjectAnimator.ofInt(head,"textColor",
+                        Color.parseColor("#776e65"),
+                        Color.parseColor("#2196f3"),
+                        Color.parseColor("#ffea00"),
+                        Color.parseColor("#776e65"));
+                objectAnimator.setDuration(5000);
+                objectAnimator.setEvaluator(new ArgbEvaluator());
+                objectAnimator.start();
+                return false;
             }
         });
     }
@@ -158,6 +183,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+    private void setGame2048TitleStateListAnimator(){
+        StateListAnimator stateListAnimator = AnimatorInflater.loadStateListAnimator(this,R.animator.game2048_game_title_state_change);
+        head.setStateListAnimator(stateListAnimator);
+    }
 
     public View getViewByPosition(int pos, ListView listView) {
         final int firstListItemPosition = listView.getFirstVisiblePosition();
