@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,6 +34,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
+    private MediaPlayer mediaPlayer;
     private DbConnection mDbConnection;
     private ListView mStocksList;
     private Float currentPrice;
@@ -83,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+//        mediaPlayer = MediaPlayer.create(this,R.raw.background_music);
+//        mediaPlayer.start();
     }
 
 
