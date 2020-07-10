@@ -35,7 +35,7 @@
 
 > [Documentation](https://finnhub.io/docs/api) for API Finnhub provides.
 
-# Code to get quotes for companie price
+## Code to get quotes for companie price
 
     Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("https://finnhub.io")
