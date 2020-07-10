@@ -86,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        mediaPlayer = MediaPlayer.create(this,R.raw.background_music);
-//        mediaPlayer.start();
+        mediaPlayer = MediaPlayer.create(this,R.raw.background_music);
+        mediaPlayer.start();
     }
 
 
